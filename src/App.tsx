@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react"
-import { Container, Flex, Text, VStack } from "@chakra-ui/react"
+import React, { useCallback, useEffect, useState } from "react"
+import { Button, Container, Flex, Text, VStack } from "@chakra-ui/react"
 
 import { useProvider } from "./hooks/useProvider"
 import { useLatestBlock } from "./hooks/useLatestBlock"
 
 function App() {
+  const provider = useProvider()
   const latestBlock = useLatestBlock()
+
+  const handleMineNewBlockClick = useCallback(() => {
+    provider.send("evm_mine", [])
+  }, [provider])
 
   return (
     <Flex
@@ -29,6 +34,7 @@ function App() {
               </VStack>
             )}
           </Flex>
+          <Button onClick={handleMineNewBlockClick}>Mine new block</Button>
         </Flex>
       </Container>
     </Flex>
