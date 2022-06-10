@@ -1,10 +1,19 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Container, Flex } from "@chakra-ui/react"
 
-import logo from "./logo.svg"
-import "./App.css"
+import { useProvider } from "./hooks/useProvider"
 
 function App() {
+  const provider = useProvider()
+  const [blockNumber, setBlockNumber] = useState<number>()
+
+  useEffect(() => {
+    ;(async function async() {
+      const blockNumber = await provider.getBlockNumber()
+      setBlockNumber(blockNumber)
+    })()
+  })
+
   return (
     <Flex
       background="orange"
@@ -15,7 +24,7 @@ function App() {
       <Container padding={0}>
         <Flex direction="column" gap={10}>
           <Flex grow={1} background="white" borderRadius={20} padding={5}>
-            Current block:
+            {blockNumber && `Block # ${blockNumber}`}
           </Flex>
         </Flex>
       </Container>
